@@ -1,10 +1,12 @@
-from bs4 import BeautifulSoup
-import requests
-import os
 import logging
+import os
+import requests
+from bs4 import BeautifulSoup
+from tqdm import tqdm
+import requests
+
 HEADERS = {"User-Agent": "Mozilla/5.0 Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36",
            "Accept-Language": "en-US, ru-RU", "Accept-Encoding": "grip, deflate", "Connection": "keep-alive", "one": "true"}
-directory = os.getcwd()
 
 
 def create_file(folder):
@@ -14,11 +16,21 @@ def create_file(folder):
         Если есть ошибка, она будет появиться на вывод (logging.info)
         :param folder: имена папки """
     try:
-        os.chdir(directory)
-        os.mkdir(folder)
-        os.chdir(f"{directory}\\\\{folder}")
+        new_directory = os.path.join(folder)
+        os.makedirs(new_directory)
     except OSError as err:
         logging.info(f'При создании файл {folder} есть ошибки \n {err}')
+
+
+def image_write_file(filename, image_url):
+    ''' Функция для записи фота в файле
+    :param filename: директория файла
+    :param image_url: адресс фота
+    :return: не возращается
+    '''
+    picture = requests.get(image_url, HEADERS)
+    with open(filename, "wb") as f:
+        f.write(picture.content)
 
 
 def image_download(folder, obj, url, counter=1000):
@@ -31,10 +43,9 @@ def image_download(folder, obj, url, counter=1000):
     :param counter: количество фота хотите скачать ( в задаче 1000 фото)
     :return: не возращается значения , для закончить программу когда хватит 1000 фото"""
     create_file(folder)
-
+    arr_image = []
     page = 0
     while counter > 0:
-        print(f"Сейчас мы на странице {page}, ещё {counter} нужно скачать><")
         url = f"{url}?p={page}&text={obj}"
         r = requests.get(url, HEADERS)
         soup = BeautifulSoup(r.text, "lxml")
@@ -43,12 +54,14 @@ def image_download(folder, obj, url, counter=1000):
             if counter == 0:
                 return
             image_url = f"https:{image.get('src')}"
-            filename = f"{counter:04d}.jpg"
-            picture = requests.get(image_url, HEADERS)
-            with open(filename, 'wb') as f:
-                f.write(picture.content)
+            arr_image.append(image_url)
             counter -= 1
         page += 1
+
+    for a in tqdm(range(len(arr_image)), desc=f'Количество фото {folder} уже скачали :'):
+        filename = os.path.join(folder, f'{a:04d}.jpg')
+        image_write_file(filename, arr_image[a])
+    del arr_image
 
 
 if __name__ == "__main__":
