@@ -21,7 +21,7 @@ def create_file(folder):
         logging.info(f'При создании файл {folder} есть ошибки \n {err}')
 
 
-def image_download(folder, obj, url, counter):
+def image_download(folder, obj, url, counter=1000):
     """Эта функция для скачать фото
     Из библиотеки request получить код содержать фото
     Мз библиотеки BS4 поменять код в lxml, поиск адресс фото и скачать их
@@ -52,5 +52,5 @@ def image_download(folder, obj, url, counter):
 
 
 if __name__ == "__main__":
-    image_download('dog', 'dog', "https://yandex.ru/images/search", 1000)
-    image_download('cat', 'cat', "https://yandex.ru/images/search", 1000)
+    image_download('dog', 'dog', "https://yandex.ru/images/search")
+    image_download('cat', 'cat', "https://yandex.ru/images/search")
