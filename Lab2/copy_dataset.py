@@ -3,7 +3,13 @@ import os
 import shutil
 
 
-def copy_dataset(path: str, path_copy: str, ann: Annotation):
+def copy_dataset(path: str, path_copy: str, ann: Annotation) -> None:
+    """
+    :param path: Путь к файле dataset
+    :param path_copy: Путь к файле копировании
+    :param ann:  класс аннотации
+    :return: не возращается
+    """
     if not os.path.isdir(path_copy):
         try:
             os.mkdir(path_copy)

@@ -5,6 +5,12 @@ from annotation import Annotation
 
 
 def dataset_random(path: str, path_random: str, ann: Annotation) -> None:
+    """
+    :param path: Путь к файле dataset
+    :param path_random: Путь к новому файле
+    :param ann: Класс аннотация
+    :return:  не возращается
+    """
     if not os.path.isdir(path_random):
         try:
             os.mkdir(path_random)
