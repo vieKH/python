@@ -22,5 +22,5 @@ def create_annotation(path: str, ann: Annotation) -> None:
 
 if __name__ == "__main__":
     path_dataset = "C:/Users/Admin/Desktop/Study/Python/pythonProject/dataset"
-    Add = Annotation("file_csv.csv")
-    create_annotation(path_dataset, Add)
+    add = Annotation("file_csv.csv")
+    create_annotation(path_dataset, add)
