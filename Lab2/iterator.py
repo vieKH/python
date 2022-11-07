@@ -15,7 +15,7 @@ class AnnIterator:
 
 if __name__ == "__main__":
     path = "C:/Users/Admin/Desktop/Study/Python/lab 2/dataset_copy"
-    Iter = AnnIterator(path)
-    print(Iter.__next__('dog_0150.jpg'))
-    print(Iter.__next__('dog_0151.jpg'))
-    print(Iter.__next__('dog_0152.jpg'))
+    it = AnnIterator(path)
+    print(it.__next__('dog_0150.jpg'))
+    print(it.__next__('dog_0151.jpg'))
+    print(it.__next__('dog_0152.jpg'))
