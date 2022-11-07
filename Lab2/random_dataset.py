@@ -14,8 +14,9 @@ def dataset_random(path: str, path_random: str, ann: Annotation) -> None:
     if not os.path.isdir(path_random):
         try:
             os.mkdir(path_random)
-        except OSError:
+        except OSError as err:
             print(f"Создать директору {path_random} не успешно")
+            raise err
 
     folders = os.listdir(path)
     for folder in folders:
@@ -32,5 +33,5 @@ def dataset_random(path: str, path_random: str, ann: Annotation) -> None:
 if __name__ == "__main__":
     path_dataset = "C:/Users/Admin/Desktop/Study/Python/pythonProject/dataset"
     path_task = "C:/Users/Admin/Desktop/Study/Python/lab 2/data_random"
-    A = Annotation("file_csv_random.csv")
-    dataset_random(path_dataset, path_task, A)
+    a = Annotation("file_csv_random.csv")
+    dataset_random(path_dataset, path_task, a)
