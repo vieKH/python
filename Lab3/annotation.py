@@ -37,13 +37,3 @@ class Annotation:
         except OSError as err:
             logging.warning(f' При попытке открытия аннотации {self.filename} произошла ошибка:\n{err}.')
         return res[0]
-
-
-if __name__ == "__main__":
-    path_dataset = "C:/Users/Admin/Desktop/Study/Python/pythonProject/dataset"
-    add = Annotation("file_csv.csv")
-    print(add.first_file_photo("cat"))
-    print(add.first_file_photo("dog"))
-    if not os.path.exists("file_csv.csv"):
-        print("cvb")
-    print(os.path.exists("file_csv.csv"))
