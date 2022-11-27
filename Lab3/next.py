@@ -16,3 +16,5 @@ def next_file(path: str):
     file_new = os.path.join(direct, file_new)
     if os.path.exists(file_new):
         return file_new
+    else:
+        raise FileExistsError(f'Файл по пути {file_new} не существует.')

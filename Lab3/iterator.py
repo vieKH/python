@@ -7,13 +7,13 @@ class AnnIterator:
         self.path = path
 
     def __iter__(self):
-        return self
+        return self.path
 
     def __next__(self):
         if self.path == next_file(self.path):
             raise StopIteration
         self.path = next_file(self.path)
-        return self.path
+
 
 
 if __name__ == "__main__":

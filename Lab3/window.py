@@ -8,7 +8,8 @@ import sys
 from PyQt6.QtWidgets import (QPushButton, QInputDialog, QApplication,
                              QMainWindow, QFileDialog, QLabel)
 from PyQt6.QtCore import QSize
-from PyQt6 import QtGui
+from PyQt6 import QtGui, QtWidgets
+from PyQt6.QtGui import QPixmap
 
 
 class MainWindow(QMainWindow):
@@ -22,7 +23,9 @@ class MainWindow(QMainWindow):
         self.setStyleSheet("background-color : #FFDEAD")
         self.setMinimumSize(800, 400)
         self.dataset_path = QFileDialog.getExistingDirectory(self, 'Выберите папку исходного датасета')
-
+        ann = Annotation("file_csv.csv")
+        if not os.path.exists("file_csv.csv"):
+            crt(self.dataset_path, ann)
 
         src = QLabel(f'Исходный датасет:\n{self.dataset_path}', self)
         src.setFixedSize(QSize(250, 50))
@@ -37,20 +40,20 @@ class MainWindow(QMainWindow):
         button_dataset_random = self.add_button("Рандом датасета", 250, 50, 5, 150)
         button_dataset_random.clicked.connect(self.dataset_random)
 
-        path_dog = os.path.join(self.dataset_path, "dog", "0000.jpg")
+        path_dog = ann.first_file_photo("dog")
         iterator_dog = AnIt(path_dog)
-        path_cat = os.path.join(self.dataset_path, "cat", "0000.jpg")
+        path_cat = ann.first_file_photo("cat")
         iterator_cat = AnIt(path_cat)
 
         button_next_dog = self.add_button("Следующая собака", 250, 50, 5, 200)
-        button_next_dog.clicked.connect(lambda label="dog", cur_iter=iterator_dog: self.next("dog", cur_iter))
+        button_next_dog.clicked.connect(lambda label="dog", cur_iter=iterator_dog: self.next(label, cur_iter))
 
         button_next_cat = self.add_button("Следующий кот", 250, 50, 5, 250)
-        button_next_cat.clicked.connect(lambda label="cat", cur_iter=iterator_cat: self.next("cat", cur_iter))
+        button_next_cat.clicked.connect(lambda label="cat", cur_iter=iterator_cat: self.next(label, cur_iter))
 
         self.image = QLabel('Нажмите кнопку "Следующая собака" или "Следующий кот".', self)
         self.image.setStyleSheet("color : #800000")
-        self.image.resize(400, 300)
+        self.image.resize(480, 320)
         self.image.move(280, 60)
 
         self.show()
@@ -63,11 +66,13 @@ class MainWindow(QMainWindow):
         return button
 
     def next(self, label: str, cur_iter: AnIt):
+
         try:
-            pixmap = QtGui.QPixmap(cur_iter.__next__())
+            pixmap = QtGui.QPixmap(cur_iter.__iter__())
             self.image.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
+            cur_iter.__next__()
         except StopIteration:
             self.image.setText(f"Изображения {label} закончились.")
         except OSError as err:
@@ -103,4 +108,3 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWindow()
     app.exec()
-
