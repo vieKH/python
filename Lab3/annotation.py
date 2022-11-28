@@ -23,17 +23,9 @@ class Annotation:
         try:
             with open(self.filename, 'r') as file:
                 rows = csv.DictReader(file)
-                if label == "cat":
-                    for row in rows:
-                        res = [row[self.__header[0]], row[self.__header[1]], row[self.__header[2]]]
-                        break
-                else:
-                    i = 0
-                    for row in rows:
-                        if i == 1000:
-                            res = [row[self.__header[0]], row[self.__header[1]], row[self.__header[2]]]
-                            break
-                        i += 1
+                for row in rows:
+                    if row[self.__header[2]] == label:
+                        return row[self.__header[0]]
         except OSError as err:
             logging.warning(f' При попытке открытия аннотации {self.filename} произошла ошибка:\n{err}.')
         return res[0]

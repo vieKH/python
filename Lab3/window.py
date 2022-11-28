@@ -7,7 +7,7 @@ from create_annotation import create_annotation as crt
 import sys
 from PyQt6.QtWidgets import (QPushButton, QInputDialog, QApplication,
                              QMainWindow, QFileDialog, QLabel)
-from PyQt6.QtCore import QSize
+from PyQt6.QtCore import QSize, Qt
 from PyQt6 import QtGui, QtWidgets
 from PyQt6.QtGui import QPixmap
 
@@ -54,7 +54,7 @@ class MainWindow(QMainWindow):
         self.image = QLabel('Нажмите кнопку "Следующая собака" или "Следующий кот".', self)
         self.image.setStyleSheet("color : #800000")
         self.image.resize(480, 320)
-        self.image.move(280, 60)
+        self.image.move(280, 40)
 
         self.show()
 
@@ -68,10 +68,12 @@ class MainWindow(QMainWindow):
     def next(self, label: str, cur_iter: AnIt):
 
         try:
-            pixmap = QtGui.QPixmap(cur_iter.__iter__())
+            pixmap = QtGui.QPixmap(cur_iter.__iter__()).scaled(self.image.height(),
+                                                               self.image.width(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
             self.image.setPixmap(pixmap)
             self.resize(pixmap.size())
             self.adjustSize()
+
             cur_iter.__next__()
         except StopIteration:
             self.image.setText(f"Изображения {label} закончились.")
