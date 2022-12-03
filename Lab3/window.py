@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
     def init_ui(self):
         self.setWindowTitle("Work with dataset")
         self.setStyleSheet("background-color : #FFDEAD")
-        self.setMinimumSize(800, 400)
+        self.setMinimumSize(650, 350)
         self.dataset_path = QFileDialog.getExistingDirectory(self, 'Выберите папку исходного датасета')
         ann = Annotation("file_csv.csv")
         if not os.path.exists("file_csv.csv"):
