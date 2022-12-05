@@ -4,7 +4,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def numerical(labels_path: pd.Series):
+def numerical(labels_path: pd.Series) -> pd.Series:
+    """
+     функуия для добавления норера изображений (cat : 0, dog :1)
+    :param labels_path: Series метки
+    :return: Series с номером
+    """
     numerical_list = []
     for label_path in labels_path:
         if label_path == "cat":
@@ -15,6 +20,11 @@ def numerical(labels_path: pd.Series):
 
 
 def img_shape(imgs_path: pd.Series):
+    """
+    функуия для получения значении ширины высоты и глубины изображений
+    :param imgs_path: пути к каждому изображениям
+    :return: Series ширины высоты и глубины
+    """
     width = []
     height = []
     channels = []
@@ -28,19 +38,45 @@ def img_shape(imgs_path: pd.Series):
 
 
 def label_filter(df1: pd.DataFrame, label: str) -> pd.DataFrame:
+    """
+     функуия для получения значении заданной меткой
+    :param df1: Заданный датафрейм
+    :param label: заданная метка
+    :return: Результат после фильтрации
+    """
     return df1[df.Label == label]
 
 
 def mul_filter(df2: pd.DataFrame, max_width: int, max_height: int, label: str) -> pd.DataFrame:
+    """
+
+    :param df2: Заданный датафрейм
+    :param max_width: заданная максимальная ширина
+    :param max_height: заданная максимальная высота
+    :param label: заданная метка
+    :return: Результат после фильтрации
+    """
     return df[((df2.Label == label) & (df2.Width <= max_width) & (df2.Height <= max_height))]
 
 
 def count_pixels(df3: pd.DataFrame) -> tuple:
+    """
+    Функция чтобы выполнить группировку DataFrame по метке класса с вычислением максимального, минимального
+                                                        и среднего значения по количеству пикселей
+    :param df3: Заданный датафрейм
+    :return: Кортеж из 3 группировок: максимальное, минимальное и среднее количество пикселей изображения.
+    """
     df['pixels'] = df['width'] * df['height']
     return df3.groupby('Label').max(), df3.groupby('Label').min(), df3.groupby('Label').mean()
 
 
 def histograms(df4: pd.DataFrame, label: str) -> list:
+    """
+    Функция для вычислить значения количества пикселей соответствует уровню яркости изображения
+    :param df4: Заданный датафрейм
+    :param label: Заданная метка
+    :return: значения количества пикселей соответствует уровню яркости изображения
+    """
     df_now = label_filter(df4, label)
     imgs_path = df_now.Absolute_Path.to_numpy()
     img_path = np.random.choice(imgs_path)
@@ -53,6 +89,12 @@ def histograms(df4: pd.DataFrame, label: str) -> list:
 
 
 def draw(df5: pd.DataFrame, label: str):
+    """
+    Функция для построить график гистограмм
+    :param df5: Заданный датафрейм
+    :param label: Метка нужна исследовать
+    :return: не возрашать значения
+    """
     hists = histograms(df5, label)
     color = ['b', 'g', 'r']
     for i in range(3):
