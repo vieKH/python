@@ -97,9 +97,11 @@ def gr_loss(train, val):
     plt.show()
 
 
-def creating_train():
-    images_list = glob.glob(os.path.join('C:/Users/Admin/Desktop/PythonZachot/lab5/dataset/cat', '*.jpg'))
-    images_list2 = glob.glob(os.path.join('C:/Users/Admin/Desktop/PythonZachot/lab5/dataset/dog', '*.jpg'))
+def creating_train(path, marks):
+    dog_path = os.path.join(path, marks[0])
+    cat_path = os.path.join(path, marks[1])
+    images_list = glob.glob(os.path.join(cat_path, '*.jpg'))
+    images_list2 = glob.glob(os.path.join(dog_path, '*.jpg'))
 
     labels = []
     for i in range(len(images_list)):
@@ -212,14 +214,16 @@ def creating_train():
 
 
 if __name__ == '__main__':
-    creating_train()
+    marks = ['cat', 'dog']
+    path_dataset = 'C:/Users/Admin/Desktop/PythonZachot/lab5/dataset'
+    creating_train(path_dataset, marks)
     id_list = []
     class_ = {1: os.path.join("dataset", "dog"), 0: os.path.join("dataset", "cat")}
     fig = plt.figure()
     while True:
         try:
             i = random.choice(submission['id'].values)
-            class_label_random = random.choice(['cat', 'dog'])
+            class_label_random = random.choice(marks)
             label = submission.loc[submission['id'] == i, 'label'].values[0]
             if label > 0.5:
                 label = 1
